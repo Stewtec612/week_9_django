@@ -1,0 +1,70 @@
+PROCESS FOR STARTING APP:
+    1) mkdir *name for folder containing all the app files*
+    2)python -m venv env
+    3)cd env
+    4)pip install django
+    5)django-admin startproject *project name*
+    6)python manage.py startapp *app name*
+    ___________________________________________________
+    -remember to include app name in settings.py INSTALLED_APPS list
+    -makemigration to create migrations folder
+    -migrate to apply the new apps files
+    - createsuperuser to create a new admin account for accessing admin site
+    -in app folder, create a templates/*app name*/*html name*
+    for how you want the pages to look
+    -remember to create a urls.py file for the app for
+    wishlist.urls to include in its main routing path
+    - "('')" means the page the website will open to by default
+    - {%%} are django template tags
+    - {% empty %} directs the places list to show empty if no entries are found
+    - {% endof %} is to tell the program this is the end of the directive
+    - {{}} used as placeholders for python variables that django can display
+    - csrf_token = cross site request forgery token
+    When creating large changes, makemigrations, then migrate
+    A Migration:
+    -instructions for the progam on how to structure the webpage
+        -like create table in sql 
+FOR PAGE 1 place_list.html:
+    -This page displays a list of places
+    which are created by the user through a text
+    input type.
+    -The user will have the option to mark the entered
+    location as visited, which will move the listed
+    location to another list of visited places
+WHAT IS NEEDED:
+    1.)URL- for a request for this page
+    2.)view - talks to database and decides what data
+    to display to the user(creates a response)
+    3.)template- an html for/how the data that's 
+    displayed  
+
+    STEP #1:
+        -Create a list of places the user has not visited yet
+            -the list of places will be stored and displayed
+            -URL/route- for this page that the user will use to navigate to the page
+            -view will fetch list of non-visited places from database, 
+            create a response that displays these places
+            -The template will be the html form used as the placeholder
+            for the list on non-visited places
+    STEP #2:
+        -Create a link to travel between pages
+    STEP #3:
+        -Create visited buttons for each location in not visited list
+        -They should automatically send the location to the visited page and removed from place list
+        
+
+    __________________________________________________
+    -THIS WILL BE THE HOMEPAGE
+
+
+PAGE #2 visited.html:
+    -Create a list for visited places
+    -list will store and display places that have visited boolean of True
+    CREATE A LINKS TO NAVIGATE BETWEEN BOTH pages
+
+PAGE #3 place_detail.html:
+    -once a location is clicked, either on place list or visited, it should open a new page
+    -This page will include name of place, date visited(if visited), notes, and a photo(if avaliable)
+    -If the location has not been visited yet, give the user the Visited! button to mark it as such
+    -give the user the option to delete the entry with a delete button to remove it from place list or visited
+    
