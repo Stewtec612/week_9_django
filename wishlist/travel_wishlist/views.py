@@ -1,8 +1,11 @@
+
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place
 from .forms import NewPlaceForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from .forms import TripReviewForm
 
 @login_required #one user name required
 def place_list(request): 
@@ -45,6 +48,7 @@ def places_visited(request):
     '''
     Creates the page that saves the places with the visited value of True
     '''
+
     visited = Place.objects.filter(visited = True)
     return render(request,'travel_wishlist/visited.html', {'visited': visited})
 
@@ -54,8 +58,36 @@ def place_details(request, place_id):
     Creates the page to show: place name, notes on the place, and date visited details
         -also gives the option to delete the entry
     '''
+    message = messages
     place = get_object_or_404(Place, id=place_id)
-    return render(request, 'travel_wishlist/place_details.html ', {'place': place})
+    
+
+    #Does this place belong to the current user?
+    if place.user != request.user:
+        return HttpResponseForbidden()
+
+    # is this a GET(show data + form) or a POST request(Update place object )?
+
+     #if POST request, validate data form and update
+    if request.method == 'POST':
+        form = TripReviewForm(request.POST, request.FILES, instance=place)
+        if form.is_valid():
+            form.save()
+            message.info(request, 'Trip information updated')
+        else:
+            message.error(request, form.errors)
+        
+        return redirect('place_details', place_id=splace_id)
+        
+    else:
+        if place.visited:
+            review_form = TripReviewForm(instance=place)
+            return render(request, 'travel_wishlist/place_detail.html', {'place':place, 'review_form':review_form })
+        else: 
+            return render(request, 'travel_wishlist/place_detail.html', {'place':place})
+     #if GET requ  est, show place info and form
+
+   
 
 
 @login_required
