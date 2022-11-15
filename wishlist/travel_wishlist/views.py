@@ -77,7 +77,7 @@ def place_details(request, place_id):
         else:
             message.error(request, form.errors)
         
-        return redirect('place_details', place_id=splace_id)
+        return redirect('place_details', place_id=place_id)
         
     else:
         if place.visited:
@@ -101,7 +101,7 @@ def place_was_visited(request, place_id):
             place.visited = True
             place.save()
 
-        #place = Place.objects.get(id=place_id)
+        place = Place.objects.get(id=place_id)
 
 
 
